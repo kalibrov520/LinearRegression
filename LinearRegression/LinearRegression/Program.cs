@@ -7,7 +7,9 @@ namespace LinearRegression
     {
         static void Main(string[] args)
         {
-            var a = new LeastSquares("C:\\Users\\ikalibrov\\Desktop\\Linear\\LinearRegression\\LinearRegression\\file.txt");
+            var leastSquares = new LeastSquares("C:\\Users\\Ilya\\Desktop\\LinearRegression\\LinearRegression\\LinearRegression\\file.txt");
+            var leastSquares2 = new LeastSquares(@"C:\Users\Ilya\Desktop\LinearRegression\LinearRegression\LinearRegression\2.txt");
+            Console.ReadLine();
         }
     }
 }
