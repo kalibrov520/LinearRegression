@@ -7,7 +7,7 @@ namespace LinearRegression
     {
         static void Main(string[] args)
         {
-            var leastSquares = new LeastSquares(@"C:\Users\ikalibrov\Desktop\Linear\LinearRegression\LinearRegression\test.txt");
+            var leastSquares = new LeastSquares(@"C:\Users\Ilya\Desktop\LinearRegression\LinearRegression\LinearRegression\test.txt");
             leastSquares.TrainModel();
             leastSquares.TestModel();
             Console.ReadLine();

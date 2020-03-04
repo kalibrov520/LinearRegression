@@ -65,43 +65,42 @@ namespace LinearRegression.LeastSquaresMethod
                     
                     //TestingRows.Add(currentLine);
 
-                    TestingMatrix[i] = currentLine.Take(TestingN - 1).ToArray();
+                    TestingMatrix[i] = currentLine.Take(TestingN).ToArray();
                 }
             }
         }
 
         public void TrainModel()
         {
-            ThetaVector = Utility.MultiplyMatrixOnVector(
-                Utility.MultiplyMatrices(
-                    Utility.Invert(Utility.MultiplyMatrices(TrainingMatrix, Utility.TransposeMatrix(TrainingMatrix))),
-                    Utility.TransposeMatrix(TrainingMatrix)), YTraining);
+            var a = Utility.TransposeMatrix(TrainingMatrix);
+            var b = Utility.MultiplyMatrices(a, TrainingMatrix);
+            var c = Utility.Invert(b);
+            var d = Utility.MultiplyMatrices(c, a);
+            var result = Utility.MultiplyMatrixOnVector(d, YTraining);
+
+            ThetaVector = result;
         }
 
         public void TestModel()
         {
-            double m = 0;
-            double sumYDiff = 0;
+            var yPredicted = new List<double>();
+            double result = 0;
 
-            for (var i = 0; i < ThetaVector.Length; i++)
+            for (var i = 0; i < TestingMatrix.Length; i++)
             {
-                double y1 = 0;
+                double aw = 0;
                 
-                for (var j = 0; j < TestingMatrix[i].Length; j++)
+                for (var j = 0; j < ThetaVector.Length; j++)
                 {
-                    y1 += TestingMatrix[i][j] * ThetaVector[j];
-                    
-                    Console.WriteLine("y1: {0}", (int)y1);
+                    aw += TestingMatrix[i][j] * ThetaVector[j];
                 }
 
-                sumYDiff += Math.Pow(YTesting[i] - y1, 2);
+                result += Math.Pow(aw - YTesting[i], 2);
                 
-                Console.WriteLine("sumYDiff: {0}", Math.Truncate(sumYDiff));
+                yPredicted.Add(aw);
             }
-
-            var mse = sumYDiff / ThetaVector.Length;
             
-            Console.WriteLine(mse);
+            Console.WriteLine(Math.Sqrt(result / YTesting.Length));
         }
     }
 }
