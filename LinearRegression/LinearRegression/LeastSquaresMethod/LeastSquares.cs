@@ -15,6 +15,8 @@ namespace LinearRegression.LeastSquaresMethod
 
         public int NumberOfTestingRows { get; set; }
 
+        public double[] ThetaVector { get; set; }
+
         public double[] YTraining { get; set; }
 
         public double[] YTesting { get; set; }
@@ -66,8 +68,40 @@ namespace LinearRegression.LeastSquaresMethod
                     TestingMatrix[i] = currentLine.Take(TestingN - 1).ToArray();
                 }
             }
-        } 
-        
-        
+        }
+
+        public void TrainModel()
+        {
+            ThetaVector = Utility.MultiplyMatrixOnVector(
+                Utility.MultiplyMatrices(
+                    Utility.Invert(Utility.MultiplyMatrices(TrainingMatrix, Utility.TransposeMatrix(TrainingMatrix))),
+                    Utility.TransposeMatrix(TrainingMatrix)), YTraining);
+        }
+
+        public void TestModel()
+        {
+            double m = 0;
+            double sumYDiff = 0;
+
+            for (var i = 0; i < ThetaVector.Length; i++)
+            {
+                double y1 = 0;
+                
+                for (var j = 0; j < TestingMatrix[i].Length; j++)
+                {
+                    y1 += TestingMatrix[i][j] * ThetaVector[j];
+                    
+                    Console.WriteLine("y1: {0}", (int)y1);
+                }
+
+                sumYDiff += Math.Pow(YTesting[i] - y1, 2);
+                
+                Console.WriteLine("sumYDiff: {0}", Math.Truncate(sumYDiff));
+            }
+
+            var mse = sumYDiff / ThetaVector.Length;
+            
+            Console.WriteLine(mse);
+        }
     }
 }
